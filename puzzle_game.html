@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Sequence Puzzle Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            text-align: center;
+            max-width: 400px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, button {
+            padding: 10px;
+            font-size: 1em;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Number Sequence Puzzle Game</h1>
+        <p><strong>Level:</strong> <span id="level">1</span></p>
+        <p><strong>Sequence:</strong> <span id="sequence">2, 4, 6, ?</span></p>
+        <p><strong>Your Score:</strong> <span id="score">0</span></p>
+        <input type="number" id="answer" placeholder="Your answer here">
+        <button onclick="submitAnswer()">Submit</button>
+        <p id="feedback"></p>
+    </div>
+
+    <script>
+        const levels = [
+            { sequence: [2, 4, 6], answer: 8, points: 10 },
+            { sequence: [1, 1, 2, 3, 5], answer: 8, points: 20 },
+            { sequence: [3, 9, 27], answer: 81, points: 30 },
+        ];
+
+        let currentLevel = 0;
+        let score = 0;
+
+        function displayLevel() {
+            document.getElementById('level').textContent = currentLevel + 1;
+            document.getElementById('sequence').textContent = levels[currentLevel].sequence.join(", ") + ", ?";
+            document.getElementById('score').textContent = score;
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('answer').value = '';
+        }
+
+        function submitAnswer() {
+            const userAnswer = parseInt(document.getElementById('answer').value);
+            const correctAnswer = levels[currentLevel].answer;
+
+            if (userAnswer === correctAnswer) {
+                score += levels[currentLevel].points;
+                document.getElementById('feedback').textContent = "Correct! Moving to the next level.";
+                currentLevel++;
+                if (currentLevel < levels.length) {
+                    setTimeout(displayLevel, 1000);
+                } else {
+                    document.getElementById('feedback').textContent = "Congratulations! You've completed all levels!";
+                    document.getElementById('sequence').textContent = "Game Over";
+                    document.getElementById('answer').disabled = true;
+                }
+            } else {
+                document.getElementById('feedback').textContent = "Incorrect! Try again.";
+            }
+
+            document.getElementById('score').textContent = score;
+        }
+
+        displayLevel();
+    </script>
+
+</body>
+</html>
